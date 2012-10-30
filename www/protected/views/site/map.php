@@ -1,3 +1,8 @@
+<?php
+/* @var $this SiteController */
+
+$this->pageTitle=Yii::app()->name;
+?>
 <head>
     <title>Карта.</title>
     <meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
@@ -39,6 +44,3 @@
 <h2>Карта:</h2>
 
 <div id="map" style="width:800px; height:600px"></div>
-</body>
-
-</html>
