@@ -21,7 +21,7 @@ $this->pageTitle=Yii::app()->name;
                 }),
                 
 		myCollection = new ymaps.GeoObjectCollection();
-
+		//Функция поиска по населенным пунктам
             	$('#search_form').submit(function () {
                 var search_query = $('input:first').val();
 
@@ -35,7 +35,47 @@ $this->pageTitle=Yii::app()->name;
 
                 });
                 return false;
+            });
 
+	//Создание балуна по клику
+	myMap.events.add('click', function (e) {
+                if (!myMap.balloon.isOpen()) {
+                    var coords = e.get('coordPosition');
+                    myMap.balloon.open(coords, {
+                        contentHeader: 'Ввод',
+                        contentBody: '<p>Введите стоимость бензина:</p>' +
+                            '<p>Координаты щелчка: ' + [
+                                coords[0].toPrecision(6),
+                                coords[1].toPrecision(6)
+                            ].join(', ')+ 
+		'<div id="menu">\
+                             <div id="menu_list">\
+                                <label>Стоимость:</label> <input type="text" class="input-medium" name="icon_text" /><br />\
+		</div>\
+                         <button type="submit" class="btn btn-success">Сохранить</button>\
+                         </div>' + 
+		'</p>',
+                        contentFooter: '<sup>Чтобы закрыть щелкните еще раз</sup>'
+                    });
+
+	var myPlacemark = new ymaps.Placemark(coords);
+		//Сохраняем данные из формы		
+		 $('#menu button[type="submit"]').click(function () {
+                        var iconText = $('input[name="icon_text"]').val();
+
+		//Добавляем метку на карту	
+		myMap.geoObjects.add(myPlacemark);
+		//Изменяем свойства метки и балуна
+                        myPlacemark.properties.set({
+                            iconContent: iconText
+                       });
+                        //Закрываем балун
+                        myMap.balloon.close();
+                    });		 
+
+                } else {
+                    myMap.balloon.close();
+                }
             });
 
             // Элементы управления и их параметры
