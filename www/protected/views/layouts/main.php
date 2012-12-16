@@ -23,7 +23,7 @@
 <div class="container" id="page">
 
 	<div id="header">
-		<div id="logo">Wiki-карта цен на бензин</div>
+		<div id="logo">Wiki-РєР°СЂС‚Р° С†РµРЅ РЅР° Р±РµРЅР·РёРЅ</div>
 	</div><!-- header -->
 
 	<div id="mainmenu">

@@ -1,17 +1,17 @@
-<?php
+п»ї<?php
 /* @var $this SiteController */
 
 $this->pageTitle=Yii::app()->name;
 ?>
 <head>
-    <title>Карта.</title>
+    <title>РљР°СЂС‚Р°.</title>
     <meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
 
     <script src="http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU"
             type="text/javascript"></script>
     <script src="http://yandex.st/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-	// Инициализация
+	// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
         ymaps.ready(init);
 
         function init () {
@@ -21,7 +21,7 @@ $this->pageTitle=Yii::app()->name;
                 }),
                 
 		myCollection = new ymaps.GeoObjectCollection();
-		//Функция поиска по населенным пунктам
+		//Р¤СѓРЅРєС†РёСЏ РїРѕРёСЃРєР° РїРѕ РЅР°СЃРµР»РµРЅРЅС‹Рј РїСѓРЅРєС‚Р°Рј
             	$('#search_form').submit(function () {
                 var search_query = $('input:first').val();
 
@@ -30,79 +30,85 @@ $this->pageTitle=Yii::app()->name;
                     myCollection = res.geoObjects;
                     myMap.geoObjects.add(myCollection);
 
-	// Просмотр результатов поиска
+	// РџСЂРѕСЃРјРѕС‚СЂ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РїРѕРёСЃРєР°
 	myMap.setBounds(myCollection.getBounds());
 
                 });
                 return false;
             });
 
-	//Создание балуна по клику
+	//РЎРѕР·РґР°РЅРёРµ Р±Р°Р»СѓРЅР° РїРѕ РєР»РёРєСѓ
 	myMap.events.add('click', function (e) {
-                if (!myMap.balloon.isOpen()) {
-                    var coords = e.get('coordPosition');
-                    myMap.balloon.open(coords, {
-                        contentHeader: 'Ввод',
-                        contentBody: '<p>Введите стоимость бензина:</p>' +
-                            '<p>Координаты щелчка: ' + [
-                                coords[0].toPrecision(6),
-                                coords[1].toPrecision(6)
-                            ].join(', ')+ 
-		'<div id="menu">\
-                             <div id="menu_list">\
-                                <label>Стоимость:</label> <input type="text" class="input-medium" name="icon_text" /><br />\
-		</div>\
-                         <button type="submit" class="btn btn-success">Сохранить</button>\
-                         </div>' + 
-		'</p>',
-                        contentFooter: '<sup>Чтобы закрыть щелкните еще раз</sup>'
-                    });
+        if (!myMap.balloon.isOpen()) {
+            var coords = e.get('coordPosition');
+                myMap.balloon.open(coords, {
+                    contentHeader: 'Р’РІРѕРґ',
+                    contentBody: '<p>Р’РІРµРґРёС‚Рµ СЃС‚РѕРёРјРѕСЃС‚СЊ Р±РµРЅР·РёРЅР°:</p>' +
+                    '<p>РљРѕРѕСЂРґРёРЅР°С‚С‹ С‰РµР»С‡РєР°: ' + [
+                        coords[0].toPrecision(6),
+                        coords[1].toPrecision(6)
+                    ].join(', ')+ 
+	                '<div id="menu">\
+                    <div id="menu_list">\
+                    <label>РЎС‚РѕРёРјРѕСЃС‚СЊ:</label> <input type="text" class="input-medium" name="icon_text" /><br />\
+		            </div>\
+                    <button type="submit" class="btn btn-success">РЎРѕС…СЂР°РЅРёС‚СЊ</button>\
+                    </div>' + 
+		            '</p>',
+                    contentFooter: '<sup>Р§С‚РѕР±С‹ Р·Р°РєСЂС‹С‚СЊ С‰РµР»РєРЅРёС‚Рµ РµС‰Рµ СЂР°Р·</sup>'
+                });
 
 	var myPlacemark = new ymaps.Placemark(coords);
-		//Сохраняем данные из формы		
-		 $('#menu button[type="submit"]').click(function () {
-                        var iconText = $('input[name="icon_text"]').val();
-
-		//Добавляем метку на карту	
-		myMap.geoObjects.add(myPlacemark);
-		//Изменяем свойства метки и балуна
-                        myPlacemark.properties.set({
-                            iconContent: iconText
-                       });
-                        //Закрываем балун
-                        myMap.balloon.close();
-                    });		 
-
-                } else {
-                    myMap.balloon.close();
-                }
+	//РЎРѕС…СЂР°РЅСЏРµРј РґР°РЅРЅС‹Рµ РёР· С„РѕСЂРјС‹		
+	$('#menu button[type="submit"]').click(function () {
+        var iconText = $('input[name="icon_text"]').val();
+    		//Р”РѕР±Р°РІР»СЏРµРј РјРµС‚РєСѓ РЅР° РєР°СЂС‚Сѓ	
+	       	myMap.geoObjects.add(myPlacemark);
+		  //РР·РјРµРЅСЏРµРј СЃРІРѕР№СЃС‚РІР° РјРµС‚РєРё Рё Р±Р°Р»СѓРЅР°
+            myPlacemark.properties.set({
+                iconContent: iconText
             });
+            //Р—Р°РєСЂС‹РІР°РµРј Р±Р°Р»СѓРЅ
+            myMap.balloon.close();
+        });		 
+            } else {
+                myMap.balloon.close();
+            }
+        });
+//---------
+    var myBdPlacemark = new ymaps.Placemark([56.01, 92.78]);
+    var iconDbText = <?=$inf->cost?>;
+    myMap.geoObjects.add(myBdPlacemark);
+    myBdPlacemark.properties.set({
+        iconContent: iconDbText
+    });
 
-            // Элементы управления и их параметры
-            myMap.controls
-                // Кнопка изменения масштаба
-                .add('zoomControl')
-                // Список типов карты
-                .add('typeSelector')
-                // Кнопка изменения масштаба - компактный вариант
-                // Расположим её справа
-                .add('smallZoomControl', { right: 5, top: 75 })
-                // Стандартный набор кнопок
-                .add('mapTools');
+//---------
+            // Р­Р»РµРјРµРЅС‚С‹ СѓРїСЂР°РІР»РµРЅРёСЏ Рё РёС… РїР°СЂР°РјРµС‚СЂС‹
+    myMap.controls
+    // РљРЅРѕРїРєР° РёР·РјРµРЅРµРЅРёСЏ РјР°СЃС€С‚Р°Р±Р°
+    .add('zoomControl')
+    // РЎРїРёСЃРѕРє С‚РёРїРѕРІ РєР°СЂС‚С‹
+    .add('typeSelector')
+    // РљРЅРѕРїРєР° РёР·РјРµРЅРµРЅРёСЏ РјР°СЃС€С‚Р°Р±Р° - РєРѕРјРїР°РєС‚РЅС‹Р№ РІР°СЂРёР°РЅС‚
+    // Р Р°СЃРїРѕР»РѕР¶РёРј РµС‘ СЃРїСЂР°РІР°
+    .add('smallZoomControl', { right: 5, top: 75 })
+    // РЎС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РЅР°Р±РѕСЂ РєРЅРѕРїРѕРє
+    .add('mapTools');
 
-            myMap.controls
-                .add(new ymaps.control.ScaleLine())
-                .add(new ymaps.control.MiniMap({
-                    type: 'yandex#publicMap'
-                }));
-        }
+    myMap.controls
+    .add(new ymaps.control.ScaleLine())
+    .add(new ymaps.control.MiniMap({
+        type: 'yandex#publicMap'
+    }));
+    }
     </script>
 </head>
 
 <body>
-<h2>Карта:</h2>
+<h2>РљР°СЂС‚Р°:</h2>
 <form id="search_form">
-    <input type="text" value="Красноярск" style="width: 720px;"/>
-    <input type="submit" value="Найти"/>
+    <input type="text" value="РљСЂР°СЃРЅРѕСЏСЂСЃРє" style="width: 720px;"/>
+    <input type="submit" value="РќР°Р№С‚Рё"/>
 </form>
 <div id="map" style="width:800px; height:600px"></div>
