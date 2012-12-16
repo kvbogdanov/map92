@@ -30,11 +30,14 @@ class SiteController extends Controller
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 //============
-		$inf = Information::model()->find(array(
+	/*	$inf = Information::model()->find(array(
 			'select' => 'cost',
-			));
+			));*/
+		$inf = Information::model()->with('idPoint')->findAll();
+		$pnt = Points::model()->with('informations')->findAll();
 		$this->render('map',array(
-			'inf' => $inf
+			'inf' => $inf,
+			'pnt' => $pnt
 			));
 //===========
 		//$this->render('map');

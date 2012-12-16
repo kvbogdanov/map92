@@ -45,8 +45,8 @@ $this->pageTitle=Yii::app()->name;
                     contentHeader: 'Ввод',
                     contentBody: '<p>Введите стоимость бензина:</p>' +
                     '<p>Координаты щелчка: ' + [
-                        coords[0].toPrecision(6),
-                        coords[1].toPrecision(6)
+                        coords[0].toPrecision(2),
+                        coords[1].toPrecision(2)
                     ].join(', ')+ 
 	                '<div id="menu">\
                     <div id="menu_list">\
@@ -76,13 +76,16 @@ $this->pageTitle=Yii::app()->name;
             }
         });
 //---------
-    var myBdPlacemark = new ymaps.Placemark([56.01, 92.78]);
-    var iconDbText = <?=$inf->cost?>;
+    var myBdPlacemark = new ymaps.Placemark([<?=str_replace(array(')','('),array('',''),$pnt[0]->coordinate)?>]);
     myMap.geoObjects.add(myBdPlacemark);
     myBdPlacemark.properties.set({
-        iconContent: iconDbText
+        iconContent: <?=$inf[0]->cost?>
     });
-
+    var myBdPlacemark1 = new ymaps.Placemark([<?=str_replace(array(')','('),array('',''),$pnt[1]->coordinate)?>]);
+    myMap.geoObjects.add(myBdPlacemark1);
+    myBdPlacemark1.properties.set({
+        iconContent: <?=$inf[1]->cost?>
+    });
 //---------
             // Элементы управления и их параметры
     myMap.controls
