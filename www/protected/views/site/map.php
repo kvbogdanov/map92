@@ -45,8 +45,8 @@ $this->pageTitle=Yii::app()->name;
                     contentHeader: 'Ввод',
                     contentBody: '<p>Введите стоимость бензина:</p>' +
                     '<p>Координаты щелчка: ' + [
-                        coords[0].toPrecision(2),
-                        coords[1].toPrecision(2)
+                        coords[0].toPrecision(4),
+                        coords[1].toPrecision(4)
                     ].join(', ')+ 
 	                '<div id="menu">\
                     <div id="menu_list">\
@@ -76,18 +76,32 @@ $this->pageTitle=Yii::app()->name;
             }
         });
 //---------
-    var myBdPlacemark = new ymaps.Placemark([<?=str_replace(array(')','('),array('',''),$pnt[0]->coordinate)?>]);
-    myMap.geoObjects.add(myBdPlacemark);
-    myBdPlacemark.properties.set({
-        iconContent: <?=$inf[0]->cost?>
-    });
-    var myBdPlacemark1 = new ymaps.Placemark([<?=str_replace(array(')','('),array('',''),$pnt[1]->coordinate)?>]);
-    myMap.geoObjects.add(myBdPlacemark1);
-    myBdPlacemark1.properties.set({
-        iconContent: <?=$inf[1]->cost?>
-    });
-//---------
-            // Элементы управления и их параметры
+    // Передадим в переменную JS массив координат из PHP
+    var coords = <?php 
+    for($i=0; $i<count($pnt); $i++){
+        // Избавимся от лишних скобок
+        $arr[]=str_replace(array(")","("),array('',''),$pnt[$i]->coordinate);
+    }
+        echo json_encode($arr);
+        ?>;
+    // Передадим в переменную JS массив стоимостей из PHP
+    var cost = <?php 
+    for($i=0; $i<count($inf); $i++){
+        $arr1[]= $inf[$i]->cost;
+    }
+        echo json_encode($arr1);
+        ?>;
+    // Отобразим точки и стоимости на карте
+    for(var i=0; i<coords.length; i++) {
+        // Так как json возвращает строку, необходимо разбить ее на координаты x и y
+        var tmp = coords[i].split(",");
+        var myBdPlacemark = new ymaps.Placemark(tmp);
+        myMap.geoObjects.add(myBdPlacemark);
+        myBdPlacemark.properties.set({
+            iconContent: cost[i]
+        });
+    };      
+    // Элементы управления и их параметры
     myMap.controls
     // Кнопка изменения масштаба
     .add('zoomControl')
